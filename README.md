@@ -28,6 +28,7 @@ zignis read https://juejin.im/post/5d82e116e51d453b7779d5f6
 - [] 支持生成 html
 - [] 探索生成其他格式的方法
 - [] 支持提供本地 web 服务，可以网址 Share 给局域网的其他好友
+- [] 解决readability-js 的安全警告，基于上游包重写
 
 ## 支持的内容源
 

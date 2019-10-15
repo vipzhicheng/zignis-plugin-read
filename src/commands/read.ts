@@ -13,6 +13,8 @@ export const desc = 'read main part of a page'
 // export const middleware = (argv) => {}
 
 export const builder = function (yargs: any) {
+  // TODO:
+  // format=pdf|doc|html|console|markdown|epub...
   yargs.option('title', { default: true, describe: 'prepend title, disable use no-title', alias: 'T' })
   yargs.option('footer', { default: true, describe: 'append footer, disable use no-footer', alias: 'F' })
 }
