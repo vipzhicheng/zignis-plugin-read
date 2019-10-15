@@ -1,5 +1,5 @@
 {
-  "name": "create-zignis-plugin",
+  "name": "zignis-plugin-read",
   "description": "A command line tool to help getting main part of a page",
   "version": "0.0.0",
   "main": "index.js",
@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "readability-js": "^1.0.7",
-    "turndown": "^5.0.3"
+    "turndown": "^5.0.3",
+    "url-parse": "^1.4.7"
   }
 }
