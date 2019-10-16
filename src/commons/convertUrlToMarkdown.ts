@@ -25,10 +25,12 @@ const convertUrlToMarkdown = async (opts) => {
 
   // HTML 预处理
   content = globalPreprocess(content)
-  if (fs.existsSync(require.resolve(path.resolve(__dirname, `preprocess/${domain}`)))) {
-    const domainPreprocess = require(path.resolve(__dirname, `preprocess/${domain}`)).default
-    content = domainPreprocess(content)
-  }
+  try {
+    if (fs.existsSync(require.resolve(path.resolve(__dirname, `preprocess/${domain}`)))) {
+      const domainPreprocess = require(path.resolve(__dirname, `preprocess/${domain}`)).default
+      content = domainPreprocess(content)
+    }
+  } catch (e) {}
 
   // 转化为 Markdown
   let markdown = turndownService.turndown(content)
@@ -38,10 +40,12 @@ const convertUrlToMarkdown = async (opts) => {
 
   // Markdown 后处理
   markdown = globalPostprocess(markdown)
-  if (fs.existsSync(require.resolve(path.resolve(__dirname, `postprocess/${domain}`)))) {
-    const domainPostprocess = require(path.resolve(__dirname, `postprocess/${domain}`)).default
-    markdown = domainPostprocess(markdown)
-  }
+  try {
+    if (fs.existsSync(require.resolve(path.resolve(__dirname, `postprocess/${domain}`)))) {
+      const domainPostprocess = require(path.resolve(__dirname, `postprocess/${domain}`)).default
+      markdown = domainPostprocess(markdown)
+    }
+  } catch (e) {}
 
   return { title: article.title, markdown, article }
 }

@@ -22,11 +22,11 @@ zignis read https://juejin.im/post/5d82e116e51d453b7779d5f6
 - [*] 支持识别网页主体，并下载成 Markdown
 - [*] 支持指定网站的预处理和后处理机制，基于网址识别域名
 - [*] data-src 识别，转换为 src
-- [] 支持生成 pdf
+- [*] 支持生成 pdf, html, png, jpeg 格式
 - [] 支持终端阅读，着色，按 q 退出
 - [] 支持直接输出，用于管道处理或自定义保存
-- [] 支持生成 html
-- [] 调研 epub 和 mobi 格式 
+- [] 支持本地或远程 markdown 转其他格式
+- [] 依赖 pandoc 实现其他各种格式，源头都是 markdown，目标格式尽量能够检测和报警，或者选择我常用的，其他能转也不转 
 - [] 支持提供本地 web 服务，可以网址 Share 给局域网的其他好友，参考 outline.com
 - [] 解决readability-js 的安全警告，基于上游包重写
 
