@@ -11,7 +11,7 @@ export const desc = 'read main part of a page'
 export const builder = function (yargs: any) {
   yargs.option('title', { default: true, describe: 'prepend title, disable use no-title' })
   yargs.option('footer', { default: true, describe: 'append footer, disable use no-footer' })
-  yargs.option('format', { default: 'markdown', describe: 'format, support: markdown, pdf, html, png, jpeg, default: markdown.', alias: 'F' })
+  yargs.option('format', { default: 'markdown', describe: 'format, support: markdown, pdf, html, png, jpeg, terminal, default: markdown.', alias: 'F' })
 }
 
 export const handler = async function (argv: any) {

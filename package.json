@@ -25,9 +25,14 @@
   },
   "dependencies": {
     "chalk": "^2.4.2",
+    "marked": "^0.7.0",
+    "marked-terminal": "^3.3.0",
     "pretty-markdown-pdf": "^1.2.0",
     "readability-js": "^1.0.7",
     "turndown": "^5.0.3",
     "url-parse": "^1.4.7"
+  },
+  "peerDependencies": {
+    "zignis": "^1.8.12"
   }
 }
