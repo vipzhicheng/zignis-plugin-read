@@ -14,7 +14,7 @@
   "highlightStyle": "",
   "breaks": false,
   "emoji": true,
-  "executablePath": "",
+  "executablePath": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
   "scale": 1,
   "displayHeaderFooter": true,
   "headerTemplate": "<div style=\"font-size: 9px; margin-left: 1cm;\"> <span class='title'></span></div> <div style=\"font-size: 9px; margin-left: auto; margin-right: 1cm; \"> <span class='date'></span></div>",

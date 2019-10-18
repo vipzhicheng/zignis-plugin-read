@@ -25,7 +25,9 @@ zignis read https://juejin.im/post/5d82e116e51d453b7779d5f6
 - [*] 支持生成 pdf, html, png, jpeg 格式
 - [*] 支持终端阅读，着色，按 q 退出
 - [*] 支持直接输出，用于管道处理或自定义保存
-- [] 支持本地或远程 markdown 转其他格式
+- [*] 支持本地 markdown 文件导入
+- [*] 优化，使其可以安装时不默认安装 puppeteer
+- [] 使用 postinstall 输出一个提示，知道用户做额外的配置
 - [] 依赖 pandoc 实现其他各种格式，源头都是 markdown，目标格式尽量能够检测和报警，或者选择我常用的，其他能转也不转 
 - [] 支持提供本地 web 服务，可以网址 Share 给局域网的其他好友，参考 outline.com
 - [] 解决readability-js 的安全警告，基于上游包重写
