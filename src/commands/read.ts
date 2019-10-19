@@ -24,24 +24,24 @@ export const handler = async function (argv: any) {
   let title
   let markdown
 
-  if (argv.url.match(/\.md$/) && !argv.url.match(/^http/)) {
-    // local
-    let filePath = argv.url[0] !== '/' ? path.resolve(process.cwd(), argv.url) : argv.url
-    markdown = fs.readFileSync(filePath)
-    title = path.basename(filePath, '.md')
-  } else {
-    const converted = await convertUrlToMarkdown(argv)
-    title = converted.title
-    markdown = converted.markdown
-  }
-  
   try {
+    if (argv.url.match(/\.md$/) && !argv.url.match(/^http/)) {
+      // local
+      let filePath = argv.url[0] !== '/' ? path.resolve(process.cwd(), argv.url) : argv.url
+      markdown = fs.readFileSync(filePath)
+      title = path.basename(filePath, '.md')
+    } else {
+      const converted = await convertUrlToMarkdown(argv)
+      title = converted.title
+      markdown = converted.markdown
+    }
+  
     if (argv.rename) {
       title = path.basename(argv.rename, path.extname(argv.rename))
       format = path.extname(argv.rename) ? path.extname(argv.rename).substring(1) : format
     }
     await convertMarkdownToFile({ format, title, markdown, argv })
   } catch (e) {
-    console.log(chalk.red(e.message))
+    console.log(chalk.red('Error: ' + e.message))
   }
 }

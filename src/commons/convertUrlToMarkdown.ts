@@ -18,6 +18,10 @@ const convertUrlToMarkdown = async (opts) => {
 
   // 获取 HTML
   const article = await promiseRead(opts.url)
+
+  if (!article.content) {
+    throw new Error('Parse failed, not a supported url!')
+  }
   let content = article.content.html()
   if (opts.title) {
     content = `<h1>${article.title}</h1>\n\n${content}`
@@ -35,7 +39,7 @@ const convertUrlToMarkdown = async (opts) => {
   // 转化为 Markdown
   let markdown = turndownService.turndown(content)
   if (opts.footer) {
-    markdown = `${markdown}\n\n---\n\nFrom: [${opts.url}](${opts.url})`
+    markdown = `${markdown}\n\n---\n\n[${opts.url}](${opts.url})`
   }
 
   // Markdown 后处理

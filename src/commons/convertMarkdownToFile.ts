@@ -29,7 +29,6 @@ const convertMarkdownToFile = async ({ format, title, markdown, argv }) => {
     fs.unlinkSync(mdName)
   } else if (format === 'markdown' || format === 'md') {
     const mdName = path.resolve(process.cwd(), `${title}.md`)
-    console.log(mdName)
     fs.writeFileSync(mdName, markdown)
   } else if (format === 'pager') {
     marked.setOptions({
