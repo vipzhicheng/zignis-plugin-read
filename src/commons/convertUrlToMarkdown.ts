@@ -39,7 +39,7 @@ const convertUrlToMarkdown = async (opts) => {
   // 转化为 Markdown
   let markdown = turndownService.turndown(content)
   if (opts.footer) {
-    markdown = `${markdown}\n\n---\n\n[${opts.url}](${opts.url})`
+    markdown = `${markdown}\n\n---\n\n[文章出处](${opts.url})`
   }
 
   // Markdown 后处理
