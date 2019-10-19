@@ -1,14 +1,16 @@
 import fs from 'fs'
 import path from 'path'
-import os from 'os'
 import mkdirp from 'mkdirp'
 import { convertMd } from 'pretty-markdown-pdf'
 import { spawn } from 'child_process'
+
+import shell from 'shelljs'
 
 import marked from 'marked'
 import TerminalRenderer from 'marked-terminal'
 
 const convertMarkdownToFile = async ({ format, title, markdown, argv }) => {
+
   if (['html', 'pdf', 'png', 'jpeg'].includes(format)) {
 
     // markdown is temp file in this process
@@ -39,6 +41,20 @@ const convertMarkdownToFile = async ({ format, title, markdown, argv }) => {
     })
   } else if (format === 'console') {
     console.log(markdown)
+  } else if (format === 'epub') {
+    if (shell.which('pandoc')) {
+      // markdown is temp file in this process
+      const mdName = `/tmp/zignis-plugin-read/${title}.md`
+
+      mkdirp.sync(path.dirname(mdName))
+      fs.writeFileSync(mdName, markdown)
+
+      shell.exec(`pandoc --metadata title="${title}" "${mdName}" -o "${title}.epub" `)
+
+      fs.unlinkSync(mdName)
+    } else {
+      console.log('.epub format need pandoc installed first.')
+    }
   } else {
     throw new Error('Unsupported format!')
   }

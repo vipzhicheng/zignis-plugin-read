@@ -25,11 +25,13 @@
   },
   "dependencies": {
     "chalk": "^2.4.2",
+    "cheerio": "^1.0.0-rc.3",
     "marked": "^0.7.0",
     "marked-terminal": "^3.3.0",
     "mkdirp": "^0.5.1",
     "pretty-markdown-pdf": "^1.2.0",
     "readability-js": "^1.0.7",
+    "shelljs": "^0.8.3",
     "turndown": "^5.0.3",
     "url-parse": "^1.4.7"
   },

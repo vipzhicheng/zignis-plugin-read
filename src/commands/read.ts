@@ -4,6 +4,7 @@ import convertUrlToMarkdown from '../commons/convertUrlToMarkdown'
 import convertMarkdownToFile from '../commons/convertMarkdownToFile'
 import chalk from 'chalk'
 
+
 export const disabled = false // Set to true to disable this command temporarily
 export const command = 'read <url>'
 export const desc = 'read main part of a page'
@@ -13,7 +14,7 @@ export const desc = 'read main part of a page'
 export const builder = function (yargs: any) {
   yargs.option('title', { default: true, describe: 'prepend title, use no-title to disable.' })
   yargs.option('footer', { default: true, describe: 'append footer, use no-footer to disable.' })
-  yargs.option('format', { default: 'markdown', describe: 'format, support: markdown, pdf, html, png, jpeg, pager, console, default: markdown.', alias: 'F' })
+  yargs.option('format', { default: 'markdown', describe: 'format, support: markdown, pdf, html, png, jpeg, pager, console, epub, default: markdown.', alias: 'F' })
   yargs.option('rename', { describe: 'new name, with extension.' })
   yargs.option('config-path', { describe: 'config path.' })
 }

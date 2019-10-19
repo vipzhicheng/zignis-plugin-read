@@ -7,7 +7,7 @@ zignis-plugin-read
 
 ```
 npm i -g zignis zignis-plugin-read
-zignis read URL
+zignis read URL --format=[FORMAT]
 ```
 
 ## 举例
@@ -16,6 +16,17 @@ zignis read URL
 zignis read https://juejin.im/post/5d82e116e51d453b7779d5f6
 
 ```
+
+## 支持的格式
+
+* `markdown`
+* `html`
+* `png`
+* `jpeg`
+* `pdf`
+* `pager`: 自定义格式，在终端输出着色的 `markdown`，然后用 `less` 输出
+* `console`: 将 `markdown` 直接输出到终端，可以按需处理
+* `epub`: 借助 `pandoc` 生成，然后可以用 Mac 自带的图书应用查看
 
 ## 开发计划
 
@@ -27,8 +38,7 @@ zignis read https://juejin.im/post/5d82e116e51d453b7779d5f6
 - [*] 支持直接输出，用于管道处理或自定义保存
 - [*] 支持本地 markdown 文件导入
 - [*] 优化，使其可以安装时不默认安装 puppeteer
-- [] 使用 postinstall 输出一个提示，知道用户做额外的配置
-- [] 依赖 pandoc 实现其他各种格式，源头都是 markdown，目标格式尽量能够检测和报警，或者选择我常用的，其他能转也不转 
+- [*] 依赖 pandoc 支持 epub
 - [] 支持提供本地 web 服务，可以网址 Share 给局域网的其他好友，参考 outline.com
 - [] 解决readability-js 的安全警告，基于上游包重写
 
