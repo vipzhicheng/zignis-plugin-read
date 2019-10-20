@@ -1,7 +1,7 @@
 zignis-plugin-read
 ------------------
 
-这是一个简单的工具插件，目的是实现一个能够方便的获取网页主体的命令行工具，我们可以选择生成 markdown, pdf, html 或者直接提供一个本地网址进行查看，以方面我们以各种方式搜集整理学习资料
+这是一个简单的工具插件，目的是实现一个能够方便的获取网页主体的命令行工具，以方面我们以各种方式搜集整理学习资料，支持各种格式，有一些特色模式，为了简单这里也称之为格式。
 
 ## 安装和使用
 
@@ -19,14 +19,15 @@ zignis read https://juejin.im/post/5d82e116e51d453b7779d5f6
 
 ## 支持的格式
 
-* `markdown`
-* `html`
-* `png`
-* `jpeg`
-* `pdf`
+* `markdown`: 基于 `readability`
+* `html`: 基于 `puppeteer`
+* `png`: 基于 `puppeteer`
+* `jpeg`: 基于 `puppeteer`
+* `pdf`: 基于 `puppeteer`
+* `epub`: 基于 `pandoc` 生成，然后可以用 Mac 自带的图书应用查看
 * `pager`: 自定义格式，在终端输出着色的 `markdown`，然后用 `less` 输出
 * `console`: 将 `markdown` 直接输出到终端，可以按需处理
-* `epub`: 借助 `pandoc` 生成，然后可以用 Mac 自带的图书应用查看
+* `web`: 把 `markdown` 输出成网页，并集成了 Markdown 编辑器，即可以查看，也可以修改
 
 ## 开发计划
 
@@ -39,8 +40,9 @@ zignis read https://juejin.im/post/5d82e116e51d453b7779d5f6
 - [*] 支持本地 markdown 文件导入
 - [*] 优化，使其可以安装时不默认安装 puppeteer
 - [*] 依赖 pandoc 支持 epub
-- [] 支持提供本地 web 服务，可以网址 Share 给局域网的其他好友，参考 outline.com
-- [] 解决readability-js 的安全警告，基于上游包重写
+- [*] 支持提供本地 web 服务，可以网址 Share 给局域网的其他好友
+- [*] 解决readability-js 的安全警告，改用上游包
+- [] 调研 mobi 格式的依赖
 
 ## 预处理和后处理
 

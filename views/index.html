@@ -1,0 +1,40 @@
+<html>
+<head>
+<title>{{title}}</title>
+<link rel="stylesheet" href="editor.md/css/editormd.min.css" />
+</head>
+<style>
+html, body {
+  margin: 0;
+  padding: 0;
+}
+</style>
+<body>
+<div id="editor">
+    <textarea style="display:none;">{{markdown}}
+    </textarea>
+  </div>
+<script src="https://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+<script src="editor.md/editormd.min.js"></script>
+<script>
+  $(function() {
+    $(document).ready(function() {
+
+      var editor = editormd("editor", {
+          // width: "100%",
+          // height: "100%",
+          // markdown: "xxxx",     // dynamic set Markdown text
+          toolbarIcons: 'simple',
+          onload: function() {
+            this.fullscreen()
+            this.unwatch()
+            this.previewing()
+          },
+          path : "editor.md/lib/"  // Autoload modules mode, codemirror, marked... dependents libs path
+      });
+    })
+  });
+
+</script>
+</body>  
+</html>

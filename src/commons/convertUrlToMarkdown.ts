@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import util from 'util'
-import read from 'readability-js'
+import read from 'node-readability'
 import TurndownService from 'turndown'
 import parse from 'url-parse'
 
@@ -18,11 +18,10 @@ const convertUrlToMarkdown = async (opts) => {
 
   // 获取 HTML
   const article = await promiseRead(opts.url)
-
   if (!article.content) {
     throw new Error('Parse failed, not a supported url!')
   }
-  let content = article.content.html()
+  let content = article.content
   if (opts.title) {
     content = `<h1>${article.title}</h1>\n\n${content}`
   }
