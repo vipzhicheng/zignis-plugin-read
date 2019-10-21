@@ -46,5 +46,8 @@
     "turndown": "^5.0.3",
     "url-parse": "^1.4.7"
   },
-  "peerDependencies": {}
+  "peerDependencies": {},
+  "config": {
+    "puppeteer_skip_chromium_download": true
+  }
 }
