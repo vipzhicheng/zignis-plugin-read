@@ -12,11 +12,12 @@ export const desc = 'read main part of a page'
 // export const middleware = (argv) => {}
 
 export const builder = function (yargs: any) {
-  yargs.option('title', { default: true, describe: 'prepend title, use no-title to disable.' })
-  yargs.option('footer', { default: true, describe: 'append footer, use no-footer to disable.' })
-  yargs.option('format', { default: 'markdown', describe: 'format, support: markdown, pdf, html, png, jpeg, pager, console, web, epub, default: markdown.', alias: 'F' })
-  yargs.option('rename', { describe: 'new name, with extension.' })
-  yargs.option('config-path', { describe: 'config path.' })
+  yargs.option('title', { default: true, describe: 'Prepend title, use no-title to disable.' })
+  yargs.option('footer', { default: true, describe: 'Append footer, use no-footer to disable.' })
+  yargs.option('toc', { default: true, describe: 'Include TOC.' })
+  yargs.option('format', { default: 'markdown', describe: 'Output format, support: markdown, pdf, html, png, jpeg, pager, console, web, epub, default: markdown.', alias: 'F' })
+  yargs.option('rename', { describe: 'New name, with extension.' })
+  yargs.option('debug', { describe: 'Check middle html code.' })
 }
 
 export const handler = async function (argv: any) {
@@ -32,6 +33,9 @@ export const handler = async function (argv: any) {
       title = path.basename(filePath, '.md')
     } else {
       const converted = await convertUrlToMarkdown(argv)
+      if (!converted) {
+        return
+      }
       title = converted.title
       markdown = converted.markdown
     }

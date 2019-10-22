@@ -25,12 +25,21 @@ html, body {
           // height: "100%",
           // markdown: "xxxx",     // dynamic set Markdown text
           toolbarIcons: 'simple',
+          tocContainer  : "",
+          tocDropdown   : true,
+          tocTitle      : "目录 Table of Contents",
           onload: function() {
             this.fullscreen()
             this.unwatch()
             this.previewing()
           },
           path : "editor.md/lib/"  // Autoload modules mode, codemirror, marked... dependents libs path
+      });
+
+      editor.config({
+          tocContainer  : "",
+          tocDropdown   : true,
+          tocTitle      : "目录 Table of Contents",
       });
     })
   });

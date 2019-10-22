@@ -1,9 +1,12 @@
 import cheerio from 'cheerio'
 
-export default (html) => {
+export default (html, opts) => {
 
   const $ = cheerio.load(html)
-  html = $('.article-content').html()
+
+  const title = $('title').html()
+  const content = $('.article-content').html()
+  html = `<title>${title}</title>${content}`
 
   return html
 }

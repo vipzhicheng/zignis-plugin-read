@@ -4,6 +4,7 @@ import util from 'util'
 import read from 'node-readability'
 import TurndownService from 'turndown'
 import parse from 'url-parse'
+import { spawn } from 'child_process'
 
 import globalPreprocess from '../commons/preprocess/global'
 import globalPostprocess from '../commons/postprocess/global'
@@ -17,23 +18,39 @@ const convertUrlToMarkdown = async (opts) => {
   const domain = url.host.replace(/^www\./, '')
 
   // 获取 HTML
-  const article = await promiseRead(opts.url)
+  const article = await promiseRead(opts.url, {
+    preprocess: function(source, response, contentType, callback) {
+      // HTML 预处理
+      source = globalPreprocess(source, opts)
+      try {
+        if (fs.existsSync(require.resolve(path.resolve(__dirname, `preprocess/${domain}`)))) {
+          const domainPreprocess = require(path.resolve(__dirname, `preprocess/${domain}`)).default
+          source = domainPreprocess(source, opts)
+        }
+      } catch (e) {}
+
+      callback(null, source);
+    }
+  })
+
   if (!article.content) {
     throw new Error('Parse failed, not a supported url!')
   }
   let content = article.content
   if (opts.title) {
+    if (opts.toc) {
+      content = `[TOC]\n\n${content}`
+    }
     content = `<h1>${article.title}</h1>\n\n${content}`
   }
 
-  // HTML 预处理
-  content = globalPreprocess(content)
-  try {
-    if (fs.existsSync(require.resolve(path.resolve(__dirname, `preprocess/${domain}`)))) {
-      const domainPreprocess = require(path.resolve(__dirname, `preprocess/${domain}`)).default
-      content = domainPreprocess(content)
-    }
-  } catch (e) {}
+  if (opts.debug) {
+    spawn(`cat <<< '${content.trim()}'  | less -r`, { 
+      stdio: 'inherit',
+      shell: true
+    })
+    return
+  }
 
   // 转化为 Markdown
   let markdown = turndownService.turndown(content)
