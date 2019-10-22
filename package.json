@@ -29,7 +29,6 @@
     "chalk": "^2.4.2",
     "cheerio": "^1.0.0-rc.3",
     "get-port": "^5.0.0",
-    "is-root": "^2.1.0",
     "koa": "^2.10.0",
     "koa-router": "^7.4.0",
     "koa-static": "^5.0.0",

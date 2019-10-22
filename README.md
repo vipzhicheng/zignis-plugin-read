@@ -5,8 +5,14 @@ zignis-plugin-read
 
 ## 安装和使用
 
-```
+```bash
 npm i -g zignis zignis-plugin-read
+
+# 默认会下载 puppeteer，比较慢，加上这个环境变量就不下了，而且默认使用 Mac 电脑上的 Chrome 浏览器
+# 路径是 /Applications/Google Chrome.app/Contents/MacOS/Google Chrome
+# 如果浏览器不存在或者路径不是上面这个，需要把源码里的配置文件导出，修改后配置使用新的配置文件
+PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true npm i -g zignis zignis-plugin-read
+
 zignis read URL --format=[FORMAT]
 ```
 
@@ -43,6 +49,7 @@ zignis read https://juejin.im/post/5d82e116e51d453b7779d5f6
 - [*] 支持提供本地 web 服务，可以网址 Share 给局域网的其他好友
 - [*] 解决readability-js 的安全警告，改用上游包
 - [] 调研 mobi 格式的依赖
+- [] 调研掘金的表格是否有可能修复，https://juejin.im/post/5da34216e51d4578502c24c5
 
 ## 预处理和后处理
 
