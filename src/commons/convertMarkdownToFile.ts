@@ -111,7 +111,7 @@ const convertMarkdownToFile = async ({ format, title, markdown, argv }) => {
         process.platform === 'win32' ? '\x1B[2J\x1B[0f' : '\x1B[2J\x1B[3J\x1B[H'
       );
     }
-    // process.stdout.isTTY && clearConsole()
+    process.stdout.isTTY && clearConsole()
 
     const box: any = ['Read the article on your default browser...', '']
     box.push(chalk.bold(`Local: `) + chalk.green(localhost))
