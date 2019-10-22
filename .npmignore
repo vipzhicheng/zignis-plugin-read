@@ -6,3 +6,8 @@ docs
 .eslintignore
 .eslintrc.js
 tsconfig.json
+assets/editor.md/docs
+assets/editor.md/examples
+assets/editor.md/scss
+assets/editor.md/src
+assets/editor.md/tests
