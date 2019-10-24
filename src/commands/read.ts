@@ -14,24 +14,25 @@ export const desc = 'read main part of a page'
 // export const middleware = (argv) => {}
 
 export const builder = function (yargs: any) {
+  yargs.option('format', { default: 'markdown', describe: 'Output format, support: markdown, md, pdf, html, png, jpeg, pager, console, web, epub, mobi, default: markdown.', alias: 'F' })
   yargs.option('title', { default: true, describe: 'Prepend title, use no-title to disable.' })
   yargs.option('footer', { default: true, describe: 'Append footer, use no-footer to disable.' })
   yargs.option('toc', { default: true, describe: 'Include TOC' })
-  yargs.option('format', { default: 'markdown', describe: 'Output format, support: markdown, md, pdf, html, png, jpeg, pager, console, web, epub, mobi, default: markdown.', alias: 'F' })
   yargs.option('rename', { describe: 'New name, with extension.' })
   yargs.option('debug', { describe: 'Check middle html code.' })
   yargs.option('port', { describe: 'Web server port.' })
+  yargs.option('open-browser', { describe: 'Auto open browser in web format.' })
 }
 
 export const handler = async function (argv: any) {
-  if (['web', 'mobi'].indexOf(argv.format) !== -1) {
+  if (['web', 'mobi'].indexOf(argv.format) > -1) {
     let port = await getPort()
     argv.port = argv.port || port
     
     // HOST地址检测
-    argv.localhost = `http://localhost:${port}`
+    argv.localhost = `http://localhost:${argv.port}`
     const interfaceFounded = _.chain(os.networkInterfaces()).flatMap().find(o => o.family === 'IPv4' && o.internal === false).value()
-    argv.nethost = interfaceFounded ? `http://${interfaceFounded.address}:${port}` : null
+    argv.nethost = interfaceFounded ? `http://${interfaceFounded.address}:${argv.port}` : null
   }
 
 

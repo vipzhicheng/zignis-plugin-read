@@ -126,7 +126,9 @@ const convertMarkdownToFile = async ({ format, title, markdown, argv }) => {
     }
 
     app.listen(argv.port)
-    await open(argv.nethost || argv.localhost)
+    if (argv.openBrowser) {
+      await open(argv.nethost || argv.localhost)
+    }
     console.log(boxen(box.join('\n'), {
       margin: 1,
       padding: 1,
