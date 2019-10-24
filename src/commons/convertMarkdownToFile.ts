@@ -36,6 +36,7 @@ const convertMarkdownToFile = async ({ format, title, markdown, argv }) => {
       markdownFilePath: mdName, 
       outputFileType: format,
       outputFilePath: path.resolve(process.cwd(), `${title}.${format}`),
+      configFilePath: argv.configPath || path.resolve(__dirname, '../config.json'),
       executablePath: argv.executablePath
     })
     fs.unlinkSync(mdName)
