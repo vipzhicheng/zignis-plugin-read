@@ -3,6 +3,7 @@ import path from 'path'
 import util from 'util'
 import read from 'node-readability'
 import TurndownService from 'turndown'
+import { tables } from 'turndown-plugin-gfm'
 import parse from 'url-parse'
 import { spawn } from 'child_process'
 
@@ -11,6 +12,7 @@ import globalPostprocess from '../commons/postprocess/global'
 
 const promiseRead = util.promisify(read)
 const turndownService = new TurndownService()
+turndownService.use(tables)
 
 const convertUrlToMarkdown = async (opts) => {
   // 获取域名标识
@@ -59,11 +61,11 @@ const convertUrlToMarkdown = async (opts) => {
   }
 
   // Markdown 后处理
-  markdown = globalPostprocess(markdown)
+  markdown = globalPostprocess(markdown, opts)
   try {
     if (fs.existsSync(require.resolve(path.resolve(__dirname, `postprocess/${domain}`)))) {
       const domainPostprocess = require(path.resolve(__dirname, `postprocess/${domain}`)).default
-      markdown = domainPostprocess(markdown)
+      markdown = domainPostprocess(markdown, opts)
     }
   } catch (e) {}
 

@@ -43,6 +43,7 @@
     "pretty-markdown-pdf": "^1.2.0",
     "shelljs": "^0.8.3",
     "turndown": "^5.0.3",
+    "turndown-plugin-gfm": "^1.0.2",
     "url-parse": "^1.4.7"
   },
   "peerDependencies": {},

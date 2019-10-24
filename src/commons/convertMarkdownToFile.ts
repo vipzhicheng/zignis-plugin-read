@@ -67,6 +67,20 @@ const convertMarkdownToFile = async ({ format, title, markdown, argv }) => {
     } else {
       console.log('.epub format need pandoc installed first.')
     }
+  } else if (format === 'mobi') {
+    if (shell.which('ebook-convert')) {
+      // markdown is temp file in this process
+      const mdName = `/tmp/zignis-plugin-read/${title}.md`
+
+      mkdirp.sync(path.dirname(mdName))
+      fs.writeFileSync(mdName, markdown)
+
+      shell.exec(`ebook-convert "${mdName}" "${title}.mobi" `)
+
+      fs.unlinkSync(mdName)
+    } else {
+      console.log('.mobi format need ebook-convert of Calibre installed first.')
+    }
   } else if (format === 'web') {
     let port = await getPort()
     

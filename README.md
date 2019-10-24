@@ -25,15 +25,18 @@ zignis read https://juejin.im/post/5d82e116e51d453b7779d5f6
 
 ## 支持的格式
 
-* `markdown`: 基于 `readability`
+* `markdown` 或 `md`: 基于 `readability`
 * `html`: 基于 `puppeteer`
 * `png`: 基于 `puppeteer`
 * `jpeg`: 基于 `puppeteer`
 * `pdf`: 基于 `puppeteer`
 * `epub`: 基于 `pandoc` 生成，然后可以用 Mac 自带的图书应用查看
+* `mobi`: 基于 `Calibre` 的 `ebook-convert` 生成，然后可以使用 `Kindle` 查看
 * `pager`: 自定义格式，在终端输出着色的 `markdown`，然后用 `less` 输出
 * `console`: 将 `markdown` 直接输出到终端，可以按需处理
 * `web`: 把 `markdown` 输出成网页，并集成了 Markdown 编辑器，即可以查看，也可以修改
+
+**这里并没有充分发挥所有 `pandoc` 和 `Calibre` 的威力，只是把我个人常用的几种格式支持了。
 
 ## 开发计划
 
@@ -48,7 +51,7 @@ zignis read https://juejin.im/post/5d82e116e51d453b7779d5f6
 - [*] 依赖 pandoc 支持 epub
 - [*] 支持提供本地 web 服务，可以网址 Share 给局域网的其他好友
 - [*] 解决readability-js 的安全警告，改用上游包
-- [] 调研 mobi 格式的依赖
+- [*] 调研 mobi 格式的依赖
 - [] 调研掘金的表格是否有可能修复，https://juejin.im/post/5da34216e51d4578502c24c5
 
 ## 预处理和后处理

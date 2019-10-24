@@ -14,8 +14,8 @@ export const desc = 'read main part of a page'
 export const builder = function (yargs: any) {
   yargs.option('title', { default: true, describe: 'Prepend title, use no-title to disable.' })
   yargs.option('footer', { default: true, describe: 'Append footer, use no-footer to disable.' })
-  yargs.option('toc', { default: true, describe: 'Include TOC.' })
-  yargs.option('format', { default: 'markdown', describe: 'Output format, support: markdown, pdf, html, png, jpeg, pager, console, web, epub, default: markdown.', alias: 'F' })
+  yargs.option('toc', { default: true, describe: 'Include TOC' })
+  yargs.option('format', { default: 'markdown', describe: 'Output format, support: markdown, md, pdf, html, png, jpeg, pager, console, web, epub, mobi, default: markdown.', alias: 'F' })
   yargs.option('rename', { describe: 'New name, with extension.' })
   yargs.option('debug', { describe: 'Check middle html code.' })
 }
