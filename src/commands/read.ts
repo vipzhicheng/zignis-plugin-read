@@ -3,7 +3,9 @@ import path from 'path'
 import convertUrlToMarkdown from '../commons/convertUrlToMarkdown'
 import convertMarkdownToFile from '../commons/convertMarkdownToFile'
 import chalk from 'chalk'
-
+import os from 'os'
+import getPort from 'get-port'
+import _ from 'lodash'
 
 export const disabled = false // Set to true to disable this command temporarily
 export const command = 'read <url>'
@@ -18,9 +20,21 @@ export const builder = function (yargs: any) {
   yargs.option('format', { default: 'markdown', describe: 'Output format, support: markdown, md, pdf, html, png, jpeg, pager, console, web, epub, mobi, default: markdown.', alias: 'F' })
   yargs.option('rename', { describe: 'New name, with extension.' })
   yargs.option('debug', { describe: 'Check middle html code.' })
+  yargs.option('port', { describe: 'Web server port.' })
 }
 
 export const handler = async function (argv: any) {
+  if (['web', 'mobi'].indexOf(argv.format) !== -1) {
+    let port = await getPort()
+    argv.port = argv.port || port
+    
+    // HOST地址检测
+    argv.localhost = `http://localhost:${port}`
+    const interfaceFounded = _.chain(os.networkInterfaces()).flatMap().find(o => o.family === 'IPv4' && o.internal === false).value()
+    argv.nethost = interfaceFounded ? `http://${interfaceFounded.address}:${port}` : null
+  }
+
+
   let format = argv.format
   let title
   let markdown

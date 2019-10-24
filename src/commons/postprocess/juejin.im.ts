@@ -10,5 +10,12 @@ export default (markdown, opts) => {
     })
   }
 
+  if (opts.format === 'mobi') {
+    const host = opts.nethost || opts.localhost
+    markdown = markdown.replace(/\!\[(.*?)\]\((.*?)\)/g,  (match, p1, p2) => {
+      return `![${p1}](${host}/proxy/${p2})`
+    })
+  }
+
   return markdown
 }

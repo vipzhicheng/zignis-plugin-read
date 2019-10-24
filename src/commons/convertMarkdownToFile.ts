@@ -1,5 +1,4 @@
 import fs from 'fs'
-import os from 'os'
 import path from 'path'
 
 import mkdirp from 'mkdirp'
@@ -11,7 +10,6 @@ import shell from 'shelljs'
 import marked from 'marked'
 import TerminalRenderer from 'marked-terminal'
 
-import getPort from 'get-port'
 import Koa from 'koa'
 import views from 'koa-views'
 import serve from 'koa-static'
@@ -82,13 +80,6 @@ const convertMarkdownToFile = async ({ format, title, markdown, argv }) => {
       console.log('.mobi format need ebook-convert of Calibre installed first.')
     }
   } else if (format === 'web') {
-    let port = await getPort()
-    
-    // HOST地址检测
-    const localhost = `http://localhost:${port}`
-    const interfaceFounded = _.chain(os.networkInterfaces()).flatMap().find(o => o.family === 'IPv4' && o.internal === false).value()
-    const nethost = interfaceFounded ? `http://${interfaceFounded.address}:${port}` : null
-
     const app = new Koa()
     var router = new Router();
  
@@ -129,13 +120,13 @@ const convertMarkdownToFile = async ({ format, title, markdown, argv }) => {
     process.stdout.isTTY && clearConsole()
 
     const box: any = ['Read the article on your default browser...', '']
-    box.push(chalk.bold(`Local: `) + chalk.green(localhost))
-    if (nethost) {
-      box.push(chalk.bold(`WLAN: `) + chalk.green(nethost))
+    box.push(chalk.bold(`Local: `) + chalk.green(argv.localhost))
+    if (argv.nethost) {
+      box.push(chalk.bold(`WLAN: `) + chalk.green(argv.nethost))
     }
 
-    app.listen(port)
-    await open(nethost || localhost)
+    app.listen(argv.port)
+    await open(argv.nethost || argv.localhost)
     console.log(boxen(box.join('\n'), {
       margin: 1,
       padding: 1,
