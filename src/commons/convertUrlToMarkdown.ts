@@ -18,6 +18,7 @@ const convertUrlToMarkdown = async (opts) => {
   // 获取域名标识
   const url = parse(opts.url)
   const domain = url.host.replace(/^www\./, '')
+  opts.domain = domain
 
   // 获取 HTML
   const article = await promiseRead(opts.url, {

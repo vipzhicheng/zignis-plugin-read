@@ -73,7 +73,7 @@ const convertMarkdownToFile = async ({ format, title, markdown, argv }) => {
       mkdirp.sync(path.dirname(mdName))
       fs.writeFileSync(mdName, markdown)
 
-      shell.exec(`ebook-convert "${mdName}" "${title}.mobi" `)
+      shell.exec(`ebook-convert "${mdName}" "${title}.mobi" --title ${title} --authors ${argv.domain}`)
 
       fs.unlinkSync(mdName)
     } else {
