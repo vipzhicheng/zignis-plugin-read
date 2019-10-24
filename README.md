@@ -52,7 +52,7 @@ zignis read https://juejin.im/post/5d82e116e51d453b7779d5f6
 - [*] 支持提供本地 web 服务，可以网址 Share 给局域网的其他好友
 - [*] 解决readability-js 的安全警告，改用上游包
 - [*] 调研 mobi 格式的依赖
-- [] 调研掘金的表格是否有可能修复，https://juejin.im/post/5da34216e51d4578502c24c5
+- [*] 调研掘金的表格是否有可能修复，https://juejin.im/post/5da34216e51d4578502c24c5
 
 ## 预处理和后处理
 
