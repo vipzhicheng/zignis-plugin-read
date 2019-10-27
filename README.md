@@ -55,6 +55,8 @@ zignis read https://juejin.im/post/5d82e116e51d453b7779d5f6
 - [*] 调研掘金的表格是否有可能修复，https://juejin.im/post/5da34216e51d4578502c24c5
 - [*] fork 过时包，做安全更新
 - [] 优化 debug 模式，引入一个 html to markdown 的 editor
+- [] 优化 web 模式，可以直接输出成网页，不启用 editor
+- [] 添加输出目录选项
 
 ## 预处理和后处理
 
