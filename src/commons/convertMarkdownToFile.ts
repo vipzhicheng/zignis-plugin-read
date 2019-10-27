@@ -22,6 +22,23 @@ import chalk from 'chalk'
 import axios from 'axios'
 
 const convertMarkdownToFile = async ({ format, title, markdown, argv }) => {
+  let dir
+  if (argv.dir) {
+    if (argv.dir[0] === '/') {
+      dir = argv.dir
+    } else if (argv.dir[0] === '~') {
+      dir = argv.dir.replace(/^~/, process.env.HOME)
+    } else {
+      dir = path.resolve(process.cwd(), argv.dir)
+    }
+  } else {
+    dir = process.cwd()
+  }
+
+  if (!fs.existsSync(dir)) {
+    mkdirp.sync(dir)
+  }
+
   if (['html', 'pdf', 'png', 'jpeg'].includes(format)) {
 
     // markdown is temp file in this process
@@ -33,13 +50,13 @@ const convertMarkdownToFile = async ({ format, title, markdown, argv }) => {
     await convertMd({ 
       markdownFilePath: mdName, 
       outputFileType: format,
-      outputFilePath: path.resolve(process.cwd(), `${title}.${format}`),
+      outputFilePath: path.resolve(dir, `${title}.${format}`),
       configFilePath: argv.configPath || path.resolve(__dirname, '../config.json'),
       executablePath: argv.executablePath
     })
     fs.unlinkSync(mdName)
   } else if (format === 'markdown' || format === 'md') {
-    const mdName = path.resolve(process.cwd(), `${title}.md`)
+    const mdName = path.resolve(dir, `${title}.md`)
     fs.writeFileSync(mdName, markdown)
   } else if (format === 'pager') {
     marked.setOptions({
@@ -59,7 +76,7 @@ const convertMarkdownToFile = async ({ format, title, markdown, argv }) => {
       mkdirp.sync(path.dirname(mdName))
       fs.writeFileSync(mdName, markdown)
 
-      shell.exec(`pandoc --metadata title="${title}" "${mdName}" -o "${title}.epub" `)
+      shell.exec(`pandoc --metadata title="${title}" "${mdName}" -o "${dir}/${title}.epub" `)
 
       fs.unlinkSync(mdName)
     } else {
@@ -73,7 +90,7 @@ const convertMarkdownToFile = async ({ format, title, markdown, argv }) => {
       mkdirp.sync(path.dirname(mdName))
       fs.writeFileSync(mdName, markdown)
 
-      shell.exec(`ebook-convert "${mdName}" "${title}.mobi" --title ${title} --authors ${argv.domain}`)
+      shell.exec(`ebook-convert "${mdName}" "${dir}/${title}.mobi" --title ${title} --authors ${argv.domain}`)
 
       fs.unlinkSync(mdName)
     } else {

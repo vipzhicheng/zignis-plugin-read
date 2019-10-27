@@ -22,6 +22,7 @@ export const builder = function (yargs: any) {
   yargs.option('debug', { describe: 'Check middle html code.' })
   yargs.option('port', { describe: 'Web server port.' })
   yargs.option('open-browser', { default: true, describe: 'Auto open browser in web format.' })
+  yargs.option('dir', { describe: 'Location for downloading.' })
 }
 
 export const handler = async function (argv: any) {
