@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import util from 'util'
-import read from 'node-readability'
+import read from '@vipzhichengfork/node-readability'
 import TurndownService from 'turndown'
 import { tables } from 'turndown-plugin-gfm'
 import parse from 'url-parse'
@@ -57,6 +57,8 @@ const convertUrlToMarkdown = async (opts) => {
 
   // 转化为 Markdown
   let markdown = turndownService.turndown(content)
+
+  console.log(content)
   if (opts.footer) {
     markdown = `${markdown}\n\n---\n\n[Original URL](${opts.url})`
   }

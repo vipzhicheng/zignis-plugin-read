@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from 'path'
 
 import mkdirp from 'mkdirp'
-import { convertMd } from 'pretty-markdown-pdf'
+import { convertMd } from '@vipzhichengfork/pretty-markdown-pdf'
 import { spawn } from 'child_process'
 
 import shell from 'shelljs'
