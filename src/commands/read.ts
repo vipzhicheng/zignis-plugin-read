@@ -15,13 +15,18 @@ export const desc = 'read main part of a page'
 
 export const builder = function (yargs: any) {
   yargs.option('format', { default: 'markdown', describe: 'Output format, support: markdown, md, pdf, html, png, jpeg, pager, console, web, epub, mobi, default: markdown.', alias: 'F' })
+  
+  // web format related
+  yargs.option('read-only', { describe: 'Only render html, used with web format.' })
+  yargs.option('debug', { describe: 'Check middle html code, used with web format.' })
+  yargs.option('port', { describe: 'Web server port.' })
+  yargs.option('open-browser', { default: true, describe: 'Auto open browser in web format.' })
+
   yargs.option('title', { default: true, describe: 'Prepend title, use no-title to disable.' })
   yargs.option('footer', { default: true, describe: 'Append footer, use no-footer to disable.' })
   yargs.option('toc', { default: true, describe: 'Include TOC' })
+
   yargs.option('rename', { describe: 'New name, with extension.' })
-  yargs.option('debug', { describe: 'Check middle html code.' })
-  yargs.option('port', { describe: 'Web server port.' })
-  yargs.option('open-browser', { default: true, describe: 'Auto open browser in web format.' })
   yargs.option('dir', { describe: 'Location for downloading.' })
 }
 
@@ -40,6 +45,7 @@ export const handler = async function (argv: any) {
   let format = argv.format
   let title
   let markdown
+  let converted
 
   try {
     if (argv.url.match(/\.md$/) && !argv.url.match(/^http/)) {
@@ -48,7 +54,7 @@ export const handler = async function (argv: any) {
       markdown = fs.readFileSync(filePath)
       title = path.basename(filePath, '.md')
     } else {
-      const converted = await convertUrlToMarkdown(argv)
+      converted = await convertUrlToMarkdown(argv)
       if (!converted) {
         return
       }
@@ -60,7 +66,7 @@ export const handler = async function (argv: any) {
       title = path.basename(argv.rename, path.extname(argv.rename))
       format = path.extname(argv.rename) ? path.extname(argv.rename).substring(1) : format
     }
-    await convertMarkdownToFile({ format, title, markdown, argv })
+    await convertMarkdownToFile({ format, title, markdown, argv, converted })
   } catch (e) {
     console.log(chalk.red('Error: ' + e.message))
   }

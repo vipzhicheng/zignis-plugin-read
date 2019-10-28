@@ -5,7 +5,6 @@ import read from '@vipzhichengfork/node-readability'
 import TurndownService from 'turndown'
 import { tables } from 'turndown-plugin-gfm'
 import parse from 'url-parse'
-import { spawn } from 'child_process'
 
 import globalPreprocess from '../commons/preprocess/global'
 import globalPostprocess from '../commons/postprocess/global'
@@ -47,14 +46,6 @@ const convertUrlToMarkdown = async (opts) => {
     content = `<h1>${article.title}</h1>\n\n${content}`
   }
 
-  if (opts.debug) {
-    spawn(`cat <<< '${content.trim()}'  | less -r`, { 
-      stdio: 'inherit',
-      shell: true
-    })
-    return
-  }
-
   // 转化为 Markdown
   let markdown = turndownService.turndown(content)
 
@@ -71,7 +62,7 @@ const convertUrlToMarkdown = async (opts) => {
     }
   } catch (e) {}
 
-  return { title: article.title, markdown, article }
+  return { title: article.title, markdown, content, article }
 }
 
 export default convertUrlToMarkdown

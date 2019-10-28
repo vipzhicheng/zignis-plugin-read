@@ -21,7 +21,7 @@ import _ from 'lodash'
 import chalk from 'chalk'
 import axios from 'axios'
 
-const convertMarkdownToFile = async ({ format, title, markdown, argv }) => {
+const convertMarkdownToFile = async ({ format, title, markdown, argv, converted }) => {
   let dir
   if (argv.dir) {
     if (argv.dir[0] === '/') {
@@ -123,9 +123,19 @@ const convertMarkdownToFile = async ({ format, title, markdown, argv }) => {
     app.use(serve(__dirname + '/../../assets'))
 
     app.use(async function (ctx) {
-      return await ctx.render('index.html', {
-        title, markdown
-      });
+      if (argv.debug) {
+        return await ctx.render('index-debug.html', {
+          html: converted && converted.content ? converted.content : 'No content'
+        });
+      } else if (argv.readOnly) {
+        return await ctx.render('index-read-only.html', {
+          title, body: marked(markdown)
+        });
+      } else {
+        return await ctx.render('index.html', {
+          title, markdown
+        });
+      }
     });
 
     // 清除终端，copy from package: react-dev-utils
