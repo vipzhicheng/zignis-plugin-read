@@ -10,7 +10,10 @@ import globalPreprocess from '../commons/preprocess/global'
 import globalPostprocess from '../commons/postprocess/global'
 
 const promiseRead = util.promisify(read)
-const turndownService = new TurndownService()
+const turndownService = new TurndownService({
+  codeBlockStyle: 'fenced',
+  fence: '\n```'
+})
 turndownService.use(tables)
 
 const convertUrlToMarkdown = async (opts) => {
