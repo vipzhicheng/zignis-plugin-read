@@ -1,7 +1,7 @@
 <html>
 <head>
 <title>{{title}}</title>
-<link rel="stylesheet" href="editor.md/css/editormd.min.css" />
+<link rel="stylesheet" href="editor.md/css/editormd.css" />
 </head>
 <style>
 html, body {
@@ -20,26 +20,37 @@ html, body {
   $(function() {
     $(document).ready(function() {
 
+      editormd.toolbarModes = {
+        simple : [
+            "undo", "redo", "|", 
+            "bold", "del", "italic", "quote", "uppercase", "lowercase", "|", 
+            "h1", "h2", "h3", "h4", "h5", "h6", "|", 
+            "list-ul", "list-ol", "hr", "|",
+            "watch", "preview", "|",
+            "help"
+          ],
+        };
+
       var editor = editormd("editor", {
-          // width: "100%",
-          // height: "100%",
-          // markdown: "xxxx",     // dynamic set Markdown text
-          toolbarIcons: 'simple',
-          tocContainer  : "",
-          tocDropdown   : true,
-          tocTitle      : "目录 Table of Contents",
-          onload: function() {
-            this.fullscreen()
+        mode: 'gfm',
+        // width: "100%",
+        // height: "100%",
+        // markdown: "xxxx",     // dynamic set Markdown text
+        toolbarIcons: 'simple',
+        tocContainer  : "",
+        htmlDecode: true,
+        tocDropdown   : true,
+        tocTitle      : "目录 Table of Contents",
+        onload: function() {
+          this.fullscreen()
+          if (this.markdownTextarea.val().trim().length > 0) {
             this.unwatch()
             this.previewing()
-          },
-          path : "editor.md/lib/"  // Autoload modules mode, codemirror, marked... dependents libs path
-      });
-
-      editor.config({
-          tocContainer  : "",
-          tocDropdown   : true,
-          tocTitle      : "目录 Table of Contents",
+          } else {
+            this.setMarkdown("")
+          }
+        },
+        path : "editor.md/lib/"  // Autoload modules mode, codemirror, marked... dependents libs path
       });
     })
   });

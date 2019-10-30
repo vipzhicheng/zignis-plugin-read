@@ -8,13 +8,13 @@ import getPort from 'get-port'
 import _ from 'lodash'
 
 export const disabled = false // Set to true to disable this command temporarily
-export const command = 'read <url>'
+export const command = 'read [url]'
 export const desc = 'read main part of a page'
 // export const aliases = ''
 // export const middleware = (argv) => {}
 
 export const builder = function (yargs: any) {
-  yargs.option('format', { default: 'markdown', describe: 'Output format, support: markdown, md, pdf, html, png, jpeg, pager, console, web, epub, mobi, default: markdown.', alias: 'F' })
+  yargs.option('format', { default: 'markdown', describe: 'Output format, support: markdown, md, pdf, html, png, jpeg, less, console, web, epub, mobi, default: markdown.', alias: 'F' })
   
   // web format related
   yargs.option('read-only', { describe: 'Only render html, used with web format.' })
@@ -48,11 +48,15 @@ export const handler = async function (argv: any) {
   let converted
 
   try {
-    if (argv.url.match(/\.md$/) && !argv.url.match(/^http/)) {
-      // local
-      let filePath = argv.url[0] !== '/' ? path.resolve(process.cwd(), argv.url) : argv.url
-      markdown = fs.readFileSync(filePath)
-      title = path.basename(filePath, '.md')
+    if (!argv.url || argv.url.match(/\.md$/) && !argv.url.match(/^http/)) {
+      if (!argv.url) {
+        title = markdown = ''
+      } else {
+        // local
+        let filePath = argv.url[0] !== '/' ? path.resolve(process.cwd(), argv.url) : argv.url
+        markdown = fs.readFileSync(filePath)
+        title = path.basename(filePath, '.md')
+      }
     } else {
       converted = await convertUrlToMarkdown(argv)
       if (!converted) {

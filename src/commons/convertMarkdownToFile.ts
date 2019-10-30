@@ -22,6 +22,10 @@ import chalk from 'chalk'
 import axios from 'axios'
 
 const convertMarkdownToFile = async ({ format, title, markdown, argv, converted }) => {
+  if (format !== 'web' && !markdown) {
+    throw new Error('Converted content is empty, please check it out!')
+  }
+
   let dir
   if (argv.dir) {
     if (argv.dir[0] === '/') {
@@ -58,7 +62,7 @@ const convertMarkdownToFile = async ({ format, title, markdown, argv, converted 
   } else if (format === 'markdown' || format === 'md') {
     const mdName = path.resolve(dir, `${title}.md`)
     fs.writeFileSync(mdName, markdown)
-  } else if (format === 'pager') {
+  } else if (format === 'less') {
     marked.setOptions({
       renderer: new TerminalRenderer()
     })
@@ -124,9 +128,15 @@ const convertMarkdownToFile = async ({ format, title, markdown, argv, converted 
 
     app.use(async function (ctx) {
       if (argv.debug) {
-        return await ctx.render('index-debug.html', {
-          html: converted && converted.content ? converted.content : 'No content'
-        });
+        if (argv.debug !== 'html') {
+          return await ctx.render('index-debug.html', {
+            html: markdown
+          });
+        } else {
+          return await ctx.render('index-debug.html', {
+            html: converted && converted.content ? converted.content : 'No content'
+          });
+        }
       } else if (argv.readOnly) {
         return await ctx.render('index-read-only.html', {
           title, body: marked(markdown)

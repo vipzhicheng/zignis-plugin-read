@@ -8,18 +8,19 @@ zignis-plugin-read
 ```bash
 npm i -g zignis zignis-plugin-read
 
-# 默认会下载 puppeteer，比较慢，加上这个环境变量就不下了，而且默认使用 Mac 电脑上的 Chrome 浏览器
-# 路径是 /Applications/Google Chrome.app/Contents/MacOS/Google Chrome
-# 如果浏览器不存在或者路径不是上面这个，需要把源码里的配置文件导出，修改后配置使用新的配置文件
+# 默认会下载 puppeteer，比较慢，加上这个环境变量就不下了，也可以 `Ctrl+C` 取消下载
+# 没有 puppeterr， `html`, `png`, `jpeg` 和 `pdf` 就不能工作了。
 PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true npm i -g zignis zignis-plugin-read
 
-zignis read URL --format=[FORMAT]
+zignis read [URL|本地 markdown] --format=[FORMAT]
 ```
 
 ## 举例
 
-```
+```bash
 zignis read https://juejin.im/post/5d82e116e51d453b7779d5f6
+zignis read --format=web # 打开一个空的 markdown 编辑器
+zignis read README.md # 欣赏一下自己项目的 README
 
 ```
 
@@ -32,33 +33,40 @@ zignis read https://juejin.im/post/5d82e116e51d453b7779d5f6
 * `pdf`: 基于 `puppeteer`
 * `epub`: 基于 `pandoc` 生成，然后可以用 Mac 自带的图书应用查看
 * `mobi`: 基于 `Calibre` 的 `ebook-convert` 生成，然后可以使用 `Kindle` 查看
-* `pager`: 自定义格式，在终端输出着色的 `markdown`，然后用 `less` 输出
+* `less`: 自定义格式，在终端输出着色的 `markdown`，然后用 `less` 输出
 * `console`: 将 `markdown` 直接输出到终端，可以按需处理
 * `web`: 把 `markdown` 输出成网页，并集成了 Markdown 编辑器，即可以查看，也可以修改
+* `web --read-only`: 把 `markdown` 输出成网页，但是没有编辑器
+* `web --debug`: 把 `markdown` 把 markdown 代码以网页输出，用于调试
+* `web --debug=html`: 把 `markdown` 把识别到的 HTML 代码以网页输出，用于调试
 
 **这里并没有充分发挥所有 `pandoc` 和 `Calibre` 的威力，只是把我个人常用的几种格式支持了。
 
 ## 开发计划
 
-- [*] 支持识别网页主体，并下载成 Markdown
-- [*] 支持指定网站的预处理和后处理机制，基于网址识别域名
-- [*] data-src等识别，转换为 src
-- [*] 支持生成 pdf, html, png, jpeg 格式
-- [*] 支持终端阅读，着色，按 q 退出
-- [*] 支持直接输出，用于管道处理或自定义保存
-- [*] 支持本地 markdown 文件导入
-- [*] 优化，使其可以安装时不默认安装 puppeteer
-- [*] 依赖 pandoc 支持 epub
-- [*] 支持提供本地 web 服务，可以网址 Share 给局域网的其他好友
-- [*] 解决readability-js 的安全警告，改用上游包
-- [*] 调研 mobi 格式的依赖
-- [*] 调研掘金的表格是否有可能修复，https://juejin.im/post/5da34216e51d4578502c24c5
-- [*] fork 过时包，做安全更新
-- [*] 添加输出目录选项 `--dir`
-- [*] 优化 web 模式，可以直接输出成网页，不启用 editor
-- [*] 优化 debug 模式，基于 Web 模式输出
-- [*] 修复代码块的配置，美化只读模式输出
-- [] 调研掘金小册
+- [x] 支持识别网页主体，并下载成 Markdown
+- [x] 支持指定网站的预处理和后处理机制，基于网址识别域名
+- [x] data-src等识别，转换为 src
+- [x] 支持生成 pdf, html, png, jpeg 格式
+- [x] 支持终端阅读，着色，按 q 退出
+- [x] 支持直接输出，用于管道处理或自定义保存
+- [x] 支持本地 markdown 文件导入
+- [x] 优化，使其可以安装时不默认安装 puppeteer
+- [x] 依赖 pandoc 支持 epub
+- [x] 支持提供本地 web 服务，可以网址 Share 给局域网的其他好友
+- [x] 解决readability-js 的安全警告，改用上游包
+- [x] 调研 mobi 格式的依赖
+- [x] 调研掘金的表格是否有可能修复，https://juejin.im/post/5da34216e51d4578502c24c5
+- [x] fork 过时包，做安全更新
+- [x] 添加输出目录选项 `--dir`
+- [x] 优化 web 模式，可以直接输出成网页，不启用 editor
+- [x] 优化 debug 模式，基于 Web 模式输出
+- [x] 修复代码块的配置，美化只读模式输出
+- [x] 给 editor.md 升级版本，解决 `<ol>` 序号错误的问题
+- [x] 支持不传参数，只打开编辑器
+- [ ] 让插件可以扩展站点预处理和后处理逻辑，让插件可以扩展更多的格式支持
+- [ ] 让 editor.md 基于包的构建产生，源码不放在这个项目，只保留必要的文件
+- [ ] 调研掘金小册
 
 ## 预处理和后处理
 
