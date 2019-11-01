@@ -11,13 +11,6 @@ export default (markdown, argv) => {
     return match
   })
 
-  // 加上本地代理，反防盗链
-  if (argv.format === 'web') {
-    markdown = markdown.replace(/\!\[(.*?)\]\((.*?)\)/g,  (match, p1, p2) => {
-      return `![${p1}](/proxy/${p2})`
-    })
-  }
-
   if (argv.format === 'mobi') {
     const host = argv.nethost || argv.localhost
     markdown = markdown.replace(/\!\[(.*?)\]\((.*?)\)/g,  (match, p1, p2) => {

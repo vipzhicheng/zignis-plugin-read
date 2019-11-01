@@ -19,6 +19,7 @@ export const builder = function (yargs: any) {
   // web format related
   yargs.option('read-only', { describe: 'Only render html, used with web format.', alias: 'ro' })
   yargs.option('debug', { describe: 'Check middle html code, used with web format.' })
+  yargs.option('proxy', { describe: 'Proxy images to prevent anti-hotlinking.' })
   yargs.option('port', { describe: 'Web server port.' })
   yargs.option('open-browser', { default: true, describe: 'Auto open browser in web format.', alias: 'ob' })
 
