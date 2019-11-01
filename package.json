@@ -46,5 +46,7 @@
     "turndown-plugin-gfm": "^1.0.2",
     "url-parse": "^1.4.7"
   },
-  "peerDependencies": {}
+  "peerDependencies": {
+    "zignis": "^1.8.22"
+  }
 }

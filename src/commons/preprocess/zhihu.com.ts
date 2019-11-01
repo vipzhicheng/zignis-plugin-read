@@ -1,4 +1,4 @@
-export default (html, opts) => {
+export default (html, argv) => {
   // 把前端图片性能优化转化成真实路径
   html = html.replace(/<noscript>.*?<\/noscript>/g, '')
   html = html.replace(/<img(.*?)(src=".*?")(.*?)>/g, '<img$1$3>')

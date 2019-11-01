@@ -1,6 +1,6 @@
 import cheerio from 'cheerio'
 
-export default (html, opts) => {
+export default (html, argv) => {
   
   // 预解析，取文章的主要部分
   const $ = cheerio.load(html)

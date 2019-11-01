@@ -9,7 +9,7 @@ import _ from 'lodash'
 
 export const disabled = false // Set to true to disable this command temporarily
 export const command = 'read [url]'
-export const desc = 'read main part of a page'
+export const desc = 'Parse and read a url or a md file with your favorate format.'
 // export const aliases = ''
 // export const middleware = (argv) => {}
 
@@ -17,17 +17,17 @@ export const builder = function (yargs: any) {
   yargs.option('format', { default: 'markdown', describe: 'Output format, support: markdown, md, pdf, html, png, jpeg, less, console, web, epub, mobi, default: markdown.', alias: 'F' })
   
   // web format related
-  yargs.option('read-only', { describe: 'Only render html, used with web format.' })
+  yargs.option('read-only', { describe: 'Only render html, used with web format.', alias: 'ro' })
   yargs.option('debug', { describe: 'Check middle html code, used with web format.' })
   yargs.option('port', { describe: 'Web server port.' })
-  yargs.option('open-browser', { default: true, describe: 'Auto open browser in web format.' })
+  yargs.option('open-browser', { default: true, describe: 'Auto open browser in web format.', alias: 'ob' })
 
   yargs.option('title', { default: true, describe: 'Prepend title, use no-title to disable.' })
   yargs.option('footer', { default: true, describe: 'Append footer, use no-footer to disable.' })
   yargs.option('toc', { default: true, describe: 'Include TOC' })
 
   yargs.option('rename', { describe: 'New name, with extension.' })
-  yargs.option('dir', { describe: 'Location for downloading.' })
+  yargs.option('dir', { describe: 'Location for output.' })
 }
 
 export const handler = async function (argv: any) {
@@ -54,7 +54,7 @@ export const handler = async function (argv: any) {
       } else {
         // local
         let filePath = argv.url[0] !== '/' ? path.resolve(process.cwd(), argv.url) : argv.url
-        markdown = fs.readFileSync(filePath)
+        markdown = fs.readFileSync(filePath, { encoding: 'utf8' })
         title = path.basename(filePath, '.md')
       }
     } else {

@@ -21,6 +21,8 @@ import _ from 'lodash'
 import chalk from 'chalk'
 import axios from 'axios'
 
+import { Utils } from 'zignis'
+
 const convertMarkdownToFile = async ({ format, title, markdown, argv, converted }) => {
   if (format !== 'web' && !markdown) {
     throw new Error('Converted content is empty, please check it out!')
@@ -42,6 +44,17 @@ const convertMarkdownToFile = async ({ format, title, markdown, argv, converted 
   if (!fs.existsSync(dir)) {
     mkdirp.sync(dir)
   }
+
+  const extendFormats = await Utils.invokeHook('read_format')
+  if (extendFormats[format]) {
+    if (Utils._.isFunction(extendFormats[format])) {
+      await ((extendFormats[format])({ format, title, markdown, argv, converted }))
+      return
+    } else {
+      throw new Error(`Format ${format} exist, but handler is not a function.`)
+    }
+  }
+  
 
   if (['html', 'pdf', 'png', 'jpeg'].includes(format)) {
 

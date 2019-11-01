@@ -12,7 +12,27 @@ npm i -g zignis zignis-plugin-read
 # 没有 puppeterr， `html`, `png`, `jpeg` 和 `pdf` 就不能工作了。
 PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true npm i -g zignis zignis-plugin-read
 
+# 用法
 zignis read [URL|本地 markdown] --format=[FORMAT]
+
+# 帮助
+zignis read [url]
+
+Parse and read a url or a md file with your favorate format.
+
+选项：
+  --version             显示版本号                                                                                [布尔]
+  --format, -F          Output format, support: markdown, md, pdf, html, png, jpeg, less, console, web, epub, mobi,
+                        default: markdown.                                                          [默认值: "markdown"]
+  --read-only, --ro     Only render html, used with web format.
+  --debug               Check middle html code, used with web format.
+  --port                Web server port.
+  --open-browser, --ob  Auto open browser in web format.                                                  [默认值: true]
+  --title               Prepend title, use no-title to disable.                                           [默认值: true]
+  --footer              Append footer, use no-footer to disable.                                          [默认值: true]
+  --toc                 Include TOC                                                                       [默认值: true]
+  --rename              New name, with extension.
+  --dir                 Location for downloading.
 ```
 
 ## 举例
@@ -40,9 +60,9 @@ zignis read README.md # 欣赏一下自己项目的 README
 * `web --debug`: 把 `markdown` 把 markdown 代码以网页输出，用于调试
 * `web --debug=html`: 把 `markdown` 把识别到的 HTML 代码以网页输出，用于调试
 
-**这里并没有充分发挥所有 `pandoc` 和 `Calibre` 的威力，只是把我个人常用的几种格式支持了。
+**这里并没有充分发挥所有 `pandoc` 和 `Calibre` 的威力，只是选择了常用的几种格式，如果不能满足你的需求，可以用下面提到的方法扩展本插件**
 
-## 开发计划
+## 开发路径
 
 - [x] 支持识别网页主体，并下载成 Markdown
 - [x] 支持指定网站的预处理和后处理机制，基于网址识别域名
@@ -64,7 +84,7 @@ zignis read README.md # 欣赏一下自己项目的 README
 - [x] 修复代码块的配置，美化只读模式输出
 - [x] 给 editor.md 升级版本，解决 `<ol>` 序号错误的问题
 - [x] 支持不传参数，只打开编辑器
-- [ ] 让插件可以扩展站点预处理和后处理逻辑，让插件可以扩展更多的格式支持
+- [x] 让插件可以扩展站点预处理和后处理逻辑，让插件可以扩展更多的格式支持
 - [ ] 让 editor.md 基于包的构建产生，源码不放在这个项目，只保留必要的文件
 - [ ] 调研掘金小册
 
@@ -89,6 +109,52 @@ zignis read README.md # 欣赏一下自己项目的 README
 ## 参与贡献
 
 这样的一个简单的项目如果能有更多的人参与和支持可以让其变得更加好用，比如提供更多网站的适配，贡献能够生成更多格式文档的代码或者发现 BUG 以后给我提 issue。
+
+## 插件开发
+
+这里提供了两个钩子给大家扩展，一个用于扩展支持的格式，一个用于扩展支持的站点解析。具体的插件开发方法请参考 `Zignis` 官方文档。
+
+```
+hook_read_format
+hook_read_domain
+```
+
+### 扩展格式示例
+
+```js
+// zignis new zignis-plugin-read-extend-format-super
+// src/hooks/index.ts
+export const hook_read_format = {
+  super: async ({ title, markdown, converted, argv }) => {
+    // implement your super format.
+  }
+}
+```
+
+### 扩展站点示例
+
+```js
+// zignis new zignis-plugin-read-extend-domain-target
+// src/hooks/index.ts
+export const hook_read_domain = {
+  'target.domain': {
+    preprocess: (source, argv) => {
+      return source
+    },
+    postprocess: (markdown, argv) => {
+      return  markdown
+    }
+  } 
+}
+```
+
+`target.domain` 不要包含开头的 `www.`，并且两个处理函数都必须把处理好的内容返回回去，预处理的 source 是文章主题的 HTML 代码，后处理的 markdown 是转换后的 markdown 代码。
+
+### 注意事项
+
+1. 如果你要把自己实现的插件发布到 npm，建议你分开实现这两个钩子，一个插件只做一件事情。如果你只是自己用，那么你可以一个插件实现所有的钩子，维护更加方便。
+2. 无法保证插件的隔离性，比如两个插件可能实现的是相同的格式或者站点处理规则，或者有交集，这方面只能交给大家去甄选，让好的插件浮出水面，并变得更好，更强大。
+
 
 ## 关于 Zignis
 

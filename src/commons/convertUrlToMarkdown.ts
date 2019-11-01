@@ -9,6 +9,8 @@ import parse from 'url-parse'
 import globalPreprocess from '../commons/preprocess/global'
 import globalPostprocess from '../commons/postprocess/global'
 
+import { Utils } from 'zignis'
+
 const promiseRead = util.promisify(read)
 const turndownService = new TurndownService({
   codeBlockStyle: 'fenced',
@@ -16,21 +18,30 @@ const turndownService = new TurndownService({
 })
 turndownService.use(tables)
 
-const convertUrlToMarkdown = async (opts) => {
+const convertUrlToMarkdown = async (argv) => {
   // 获取域名标识
-  const url = parse(opts.url)
+  const url = parse(argv.url)
   const domain = url.host.replace(/^www\./, '')
-  opts.domain = domain
+  argv.domain = domain
+
+  const extendDomains = await Utils.invokeHook('read_domain')
 
   // 获取 HTML
-  const article = await promiseRead(opts.url, {
+  const article = await promiseRead(argv.url, {
     preprocess: function(source, response, contentType, callback) {
       // HTML 预处理
-      source = globalPreprocess(source, opts)
+      source = globalPreprocess(source, argv)
       try {
-        if (fs.existsSync(require.resolve(path.resolve(__dirname, `preprocess/${domain}`)))) {
-          const domainPreprocess = require(path.resolve(__dirname, `preprocess/${domain}`)).default
-          source = domainPreprocess(source, opts)
+        if (extendDomains[domain] && extendDomains[domain].preprocess && Utils._.isFunction(extendDomains[domain].preprocess)) {
+          const newSource = extendDomains[domain].preprocess(source, argv)
+          if (newSource && Utils._.isString(newSource)) {
+            markdown = newSource
+          }
+        } else {
+          if (fs.existsSync(require.resolve(path.resolve(__dirname, `preprocess/${domain}`)))) {
+            const domainPreprocess = require(path.resolve(__dirname, `preprocess/${domain}`)).default
+            source = domainPreprocess(source, argv)
+          }
         }
       } catch (e) {}
 
@@ -42,8 +53,8 @@ const convertUrlToMarkdown = async (opts) => {
     throw new Error('Parse failed, not a supported url!')
   }
   let content = article.content
-  if (opts.title) {
-    if (opts.toc) {
+  if (argv.title) {
+    if (argv.toc) {
       content = `[TOC]\n\n${content}`
     }
     content = `<h1>${article.title}</h1>\n\n${content}`
@@ -52,17 +63,26 @@ const convertUrlToMarkdown = async (opts) => {
   // 转化为 Markdown
   let markdown = turndownService.turndown(content)
 
-  if (opts.footer) {
-    markdown = `${markdown}\n\n---\n\n[Original URL](${opts.url})`
+  if (argv.footer) {
+    markdown = `${markdown}\n\n---\n\n[Original URL](${argv.url})`
   }
 
   // Markdown 后处理
-  markdown = globalPostprocess(markdown, opts)
+  markdown = globalPostprocess(markdown, argv)
   try {
-    if (fs.existsSync(require.resolve(path.resolve(__dirname, `postprocess/${domain}`)))) {
-      const domainPostprocess = require(path.resolve(__dirname, `postprocess/${domain}`)).default
-      markdown = domainPostprocess(markdown, opts)
+    if (extendDomains[domain] && extendDomains[domain].postprocess && Utils._.isFunction(extendDomains[domain].postprocess)) {
+      const newMarkdown = extendDomains[domain].postprocess(markdown, argv)
+      if (newMarkdown && Utils._.isString(newMarkdown)) {
+        markdown = newMarkdown
+      }
+    } else {
+      if (fs.existsSync(require.resolve(path.resolve(__dirname, `postprocess/${domain}`)))) {
+        const domainPostprocess = require(path.resolve(__dirname, `postprocess/${domain}`)).default
+        markdown = domainPostprocess(markdown, argv)
+      }
     }
+
+    
   } catch (e) {}
 
   return { title: article.title, markdown, content, article }
