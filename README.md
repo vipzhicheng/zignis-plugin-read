@@ -27,6 +27,8 @@ Parse and read a url or a md file with your favorate format.
   --read-only, --ro     Only render html, used with web format.
   --debug               Check middle html code, used with web format.
   --port                Web server port.
+  --localhost           Localhost host with port, auto set and you can change.
+  --nethost             WLAN host with port, auto set and you can change.
   --open-browser, --ob  Auto open browser in web format.                                                  [默认值: true]
   --title               Prepend title, use no-title to disable.                                           [默认值: true]
   --footer              Append footer, use no-footer to disable.                                          [默认值: true]

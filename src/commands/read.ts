@@ -21,7 +21,9 @@ export const builder = function (yargs: any) {
   yargs.option('debug', { describe: 'Check middle html code, used with web format.' })
   yargs.option('proxy', { describe: 'Proxy images to prevent anti-hotlinking.' })
   yargs.option('port', { describe: 'Web server port.' })
-  yargs.option('open-browser', { default: true, describe: 'Auto open browser in web format.', alias: 'ob' })
+  yargs.option('localhost', { describe: 'Localhost host with port, auto set and you can change.' })
+  yargs.option('nethost', { describe: 'WLAN host with port, auto set and you can change.' })
+  yargs.option('open-browser', { default: true, describe: 'Auto open browser in web format.', alias: 'open' })
 
   yargs.option('title', { default: true, describe: 'Prepend title, use no-title to disable.' })
   yargs.option('footer', { default: true, describe: 'Append footer, use no-footer to disable.' })
@@ -32,16 +34,15 @@ export const builder = function (yargs: any) {
 }
 
 export const handler = async function (argv: any) {
-  if (['web', 'mobi'].indexOf(argv.format) > -1) {
-    let port = await getPort()
-    argv.port = argv.port || port
-    
-    // HOST地址检测
-    argv.localhost = `http://localhost:${argv.port}`
-    const interfaceFounded = _.chain(os.networkInterfaces()).flatMap().find(o => o.family === 'IPv4' && o.internal === false).value()
-    argv.nethost = interfaceFounded ? `http://${interfaceFounded.address}:${argv.port}` : null
-  }
 
+  // Even the format is not web or mobi, other plugins may need these values
+  let port = await getPort()
+  argv.port = argv.port || port
+  
+  // HOST地址检测
+  argv.localhost = `http://localhost:${argv.port}`
+  const interfaceFounded = _.chain(os.networkInterfaces()).flatMap().find(o => o.family === 'IPv4' && o.internal === false).value()
+  argv.nethost = interfaceFounded ? `http://${interfaceFounded.address}:${argv.port}` : null
 
   let format = argv.format
   let title
@@ -73,6 +74,6 @@ export const handler = async function (argv: any) {
     }
     await convertMarkdownToFile({ format, title, markdown, argv, converted })
   } catch (e) {
-    console.log(chalk.red('Error: ' + e.message))
+    console.log(chalk.red('Error: ' + e.stack))
   }
 }
