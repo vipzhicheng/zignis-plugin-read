@@ -23,7 +23,7 @@ export const builder = function (yargs: any) {
   yargs.option('port', { describe: 'Web server port.' })
   yargs.option('localhost', { describe: 'Localhost host with port, auto set and you can change.' })
   yargs.option('nethost', { describe: 'WLAN host with port, auto set and you can change.' })
-  yargs.option('open-browser', { default: true, describe: 'Auto open browser in web format.', alias: 'open' })
+  yargs.option('open-browser', { describe: 'Auto open browser in web format.', alias: 'open' })
 
   yargs.option('title', { default: true, describe: 'Prepend title, use no-title to disable.' })
   yargs.option('footer', { default: true, describe: 'Append footer, use no-footer to disable.' })

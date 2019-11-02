@@ -4,7 +4,7 @@ export default (markdown, argv) => {
   markdown = markdown.replace(/\\\[TOC\\\]/, '[TOC]')
 
   // 加上本地代理，反防盗链
-  if (argv.format === 'web' && argv.proxy) {
+  if (argv.proxy) {
     markdown = markdown.replace(/\!\[(.*?)\]\((.*?)\)/g,  (match, p1, p2) => {
       return `![${p1}](/proxy/${p2})`
     })
