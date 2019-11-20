@@ -24,10 +24,6 @@ import axios from 'axios'
 import { Utils } from 'zignis'
 
 const convertMarkdownToFile = async ({ format, title, markdown, argv, converted }) => {
-  if (format !== 'web' && !markdown) {
-    throw new Error('Converted content is empty, please check it out!')
-  }
-
   let dir
   if (argv.dir) {
     if (argv.dir[0] === '/') {
