@@ -12,11 +12,6 @@ import globalPostprocess from '../commons/postprocess/global'
 import { Utils } from 'zignis'
 
 const promiseRead = util.promisify(read)
-const turndownService = new TurndownService({
-  codeBlockStyle: 'fenced',
-  fence: '\n```'
-})
-turndownService.use(tables)
 
 const convertUrlToMarkdown = async (argv) => {
   // 获取域名标识
@@ -25,6 +20,13 @@ const convertUrlToMarkdown = async (argv) => {
   argv.domain = domain
 
   const extendDomains = await Utils.invokeHook('read_domain')
+
+  // 初始化转换库
+  const turndownService = new TurndownService({
+    codeBlockStyle: 'fenced',
+    fence: argv.format === 'web' ? '\n```' : '```'
+  })
+  turndownService.use(tables)
 
   // 获取 HTML
   const article = await promiseRead(argv.url, {
