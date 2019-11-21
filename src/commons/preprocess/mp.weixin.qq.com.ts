@@ -7,7 +7,7 @@ export default (html: string, argv) => {
       return `${p1}\n`
     })
 
-    return `<pre><code>${match1}</code></pre>`
+    return `<pre><code>${match1.trim()}</code></pre>`
   })
 
   return html
