@@ -116,12 +116,15 @@ zignis read README.md # 欣赏一下自己项目的 README
 
 ## 插件开发
 
-这里提供了两个钩子给大家扩展，一个用于扩展支持的格式，一个用于扩展支持的站点解析。具体的插件开发方法请参考 `Zignis` 官方文档。
+这里提供了三个钩子给大家扩展，前两个用于扩展支持的格式，一个用于扩展支持的站点解析。
 
 ```
+hook_read_define_format
 hook_read_format
 hook_read_domain
 ```
+
+`hook_read_define_format` 这个钩子只是为了声明，不参与逻辑，一般跟 `hook_read_format` 成对使用。具体的插件开发方法请参考 `Zignis` 官方文档或参考项目代码。
 
 ### 扩展格式示例
 
