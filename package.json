@@ -1,7 +1,7 @@
 {
   "name": "zignis-plugin-read",
   "description": "A command line tool to help getting main part of a page",
-  "version": "0.0.33",
+  "version": "0.0.34",
   "main": "index.js",
   "license": "MIT",
   "devDependencies": {
