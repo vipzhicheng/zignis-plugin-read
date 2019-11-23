@@ -24,7 +24,7 @@ const convertUrlToMarkdown = async (argv) => {
   // 初始化转换库
   const turndownService = new TurndownService({
     codeBlockStyle: 'fenced',
-    fence: argv.format === 'web' ? '\n```' : '```'
+    fence: '\n```'
   })
   turndownService.use(tables)
 
