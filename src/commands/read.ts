@@ -6,6 +6,7 @@ import chalk from 'chalk'
 import os from 'os'
 import getPort from 'get-port'
 import _ from 'lodash'
+import { Utils } from 'zignis'
 
 export const disabled = false // Set to true to disable this command temporarily
 export const command = 'read [url]'
@@ -14,27 +15,46 @@ export const desc = 'Parse and read a url or a md file with your favorate format
 // export const middleware = (argv) => {}
 
 export const builder = function (yargs: any) {
-  yargs.option('format', { default: 'markdown', describe: 'Output format, support: markdown, md, pdf, html, png, jpeg, less, console, web, epub, mobi, default: markdown.', alias: 'F' })
+  yargs.option('format', { default: 'markdown', describe: 'Output format, use --available-formats to see all supported formats, default: markdown.', alias: 'F' })
   
   // web format related
   yargs.option('read-only', { describe: 'Only render html, used with web format.', alias: 'ro' })
-  yargs.option('debug', { describe: 'Check middle html code, used with web format.' })
-  yargs.option('proxy', { describe: 'Proxy images to prevent anti-hotlinking.' })
+  yargs.option('debug', { describe: 'Check middle code, used with web format, default is parsed markdown, debug=html will show parsed html' })
+  yargs.option('proxy', { describe: 'Proxy images to prevent anti-hotlinking.', alias: 'P' })
   yargs.option('port', { describe: 'Web server port.' })
   yargs.option('localhost', { describe: 'Localhost host with port, auto set and you can change.' })
   yargs.option('nethost', { describe: 'WLAN host with port, auto set and you can change.' })
-  yargs.option('open-browser', { describe: 'Auto open browser in web format.', alias: 'open' })
+  yargs.option('open-browser', { describe: 'Auto open browser in web format.', alias: ['open', 'ob'] })
   yargs.option('clear-console', { describe: 'Auto clear console.', alias: 'clear' })
 
   yargs.option('title', { default: true, describe: 'Prepend title, use no-title to disable.' })
   yargs.option('footer', { default: true, describe: 'Append footer, use no-footer to disable.' })
   yargs.option('toc', { default: true, describe: 'Include TOC' })
 
-  yargs.option('rename', { describe: 'New name, with extension.' })
-  yargs.option('dir', { describe: 'Location for output.' })
+  yargs.option('rename', { describe: 'New name, with extension.', alias: 'R' })
+  yargs.option('directory', { describe: 'Location for output.', alias: 'dir' })
+
+  yargs.option('available-formats', { describe: 'List supported formats', alias: 'A' })
 }
 
 export const handler = async function (argv: any) {
+  if (argv.availableFormats) {
+    const formats = await Utils.invokeHook('read_define_format')
+    const headers = ['格式', '说明', '别名']
+    const rows = [headers]
+    Object.keys(formats).forEach(key => {
+      const format = formats[key]
+      const describe = _.isObject(format) ? format.describe : format
+      const alias = _.isObject(format) ? format.alias : ''
+      rows.push([
+        key, describe, alias
+      ])
+    })
+
+    console.log(Utils.chalk.green('\nSupported formats: --format=[FORMAT]\n'))
+    console.log(Utils.table(rows))
+    process.exit(1)
+  }
 
   // Even the format is not web or mobi, other plugins may need these values
   let port = await getPort()

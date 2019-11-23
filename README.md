@@ -21,20 +21,23 @@ zignis read [url]
 Parse and read a url or a md file with your favorate format.
 
 选项：
-  --version             显示版本号                                                                                [布尔]
-  --format, -F          Output format, support: markdown, md, pdf, html, png, jpeg, less, console, web, epub, mobi,
-                        default: markdown.                                                          [默认值: "markdown"]
-  --read-only, --ro     Only render html, used with web format.
-  --debug               Check middle html code, used with web format.
-  --port                Web server port.
-  --localhost           Localhost host with port, auto set and you can change.
-  --nethost             WLAN host with port, auto set and you can change.
-  --open-browser, --ob  Auto open browser in web format.                                                  [默认值: true]
-  --title               Prepend title, use no-title to disable.                                           [默认值: true]
-  --footer              Append footer, use no-footer to disable.                                          [默认值: true]
-  --toc                 Include TOC                                                                       [默认值: true]
-  --rename              New name, with extension.
-  --dir                 Location for downloading.
+  --format, -F                  Output format, use --available-formats to see all supported formats,
+                                default: markdown.                                 [默认值: "markdown"]
+  --read-only, --ro             Only render html, used with web format.
+  --debug                       Check middle code, used with web format, default is parsed markdown,
+                                debug=html will show parsed html
+  --proxy, -P                   Proxy images to prevent anti-hotlinking.
+  --port                        Web server port.
+  --localhost                   Localhost host with port, auto set and you can change.
+  --nethost                     WLAN host with port, auto set and you can change.
+  --open-browser, --open, --ob  Auto open browser in web format.
+  --clear-console, --clear      Auto clear console.
+  --title                       Prepend title, use no-title to disable.                  [默认值: true]
+  --footer                      Append footer, use no-footer to disable.                 [默认值: true]
+  --toc                         Include TOC                                              [默认值: true]
+  --rename, -R                  New name, with extension.
+  --directory, --dir            Location for output.
+  --available-formats, -A       List supported formats
 ```
 
 ## 举例
@@ -88,8 +91,6 @@ zignis read README.md # 欣赏一下自己项目的 README
 - [x] 支持不传参数，只打开编辑器
 - [x] 让插件可以扩展站点预处理和后处理逻辑，让插件可以扩展更多的格式支持
 - [ ] 调研 puppeteer 模式，应对动态内容的页面，例如 infoq
-- [ ] 让 editor.md 基于包的构建产生，源码不放在这个项目，只保留必要的文件
-- [ ] 调研掘金小册
 
 ## 预处理和后处理
 
